@@ -16,11 +16,11 @@ const keywordsList = [
 ];
 // キーワードごとのプロンプト例
 const keywordPrompts = {
-    luxury: "high-end luxury, premium feel, spremium materials, harmonious design",
-    simple: "clean simple aesthetic, intuitive layout, effortless and accessible design, clear and easy to understand",
-    modern: "sleek modern design, cutting-edge typography, contemporary forms",
-    natural: "natural organic ingredients concept, subtle hand-rendered graphic texture, muted earthy tones, serene atmosphere",
-    rustic: "rustic handcrafted texture, cozy and inviting feel, vintage illustration style, traditional and sincere design",
+    luxury: "high-end luxury, premium feel, Elegant and premium visual quality, harmonious design",
+    simple: "Minimalist visual aesthetic, using clean lines and shapes, with vast negative space, and a high-contrast composition",
+    modern: "Cutting-edge contemporary graphic style, featuring innovative structural composition, sharp dynamic lines, and futuristic",
+    natural: "Authentic, raw nature aesthetic, tactile material texture, serene and calming atmosphere,",
+    rustic: "rustic charm, traditional handmade aesthetic, gentle and sincere impression, natural simple design",
     clean: "pristine clean aesthetic, delicate graphic, clear and crisp visual elements",
     clear: "crystal clear appearance, transparent and icy texture, light and delicate design, fresh and refreshing atmosphere",
     unique: "Distinct unique concept, visually compelling arrangement, artistic composition, bold expressive style",
@@ -43,21 +43,22 @@ const toneOptions = [
 
 // --- 北海道モチーフオプション ---
 const motifOptions = {
-    bear: {name: "ヒグマ", basePrompt: "Hokkaido brown bear motif graphic, bold and powerful illustration, wilderness element"},
+    bear: {name: "ヒグマ", basePrompt: "Hokkaido brown bear motif graphic"},
     fox: {name: "キタキツネ", basePrompt: "cute Ezo red fox illustration, playful and curious character, snowy winter setting"},
     simaenaga: {name: "シマエナガ", basePrompt: "cute Long-tailed tit bird graphic, fluffy white feather texture, round and tiny figure, snowy winter forest setting"},
     cow: {name: "牛", basePrompt: "detailed Holstein dairy cow illustration, peaceful and plump animal character, vast green pasture background"},
     lavender: {name: "ラベンダー", basePrompt: "delicate lavender flower illustration, rich herb graphic, vibrant and colorful bloom, subtle texture"},
-    birch: {name: "白樺", basePrompt: "elegant white birch tree forest motif, tall slender trunk pattern, refreshing light green leaves illustration, cool and serene atmosphere"},
+    birch: {name: "白樺", basePrompt: "white birch tree forest motif"},
     farm: {name: "牧場", basePrompt: "wide open pasture landscape illustration, wooden fence and silo motif, vast and peaceful atmosphere"},
     plain: {name: "大地", basePrompt: "vast green plain landscape illustration, endless horizon and open sky, serene and peaceful atmosphere, earthy and natural texture"},
-    sea: {name: "海", basePrompt: "deep ocean wave pattern, abstract marine texture, vast and powerful blue color gradient, sparkling water surface"},
+    sea: {name: "海", basePrompt: "Vast marine landscape element, dynamic water movement, deep oceanic texture"},
     driftice: {name: "流氷", basePrompt: "cold and majestic drift ice pattern, geometric ice block texture, abstract winter landscape"}, 
-    snow: {name: "雪", basePrompt: "minimalist snow crystal graphic, icy clear texture, cool and crisp atmosphere, pure white"},
+    snow: {name: "雪", basePrompt: "Winter's essence, pure frozen elements, delicate cold atmosphere"},
     milk: {name: "牛乳", basePrompt: "fresh milk carton or bottle graphic, creamy white liquid texture, simple and healthy food element, bright blue and white color"},
     potato: {name: "ジャガイモ", basePrompt: "round and earthy potato vegetable motif, rough skin texture, natural harvest illustration, brown and yellow tones"},
     melon: {name: "メロン", basePrompt: "sliced luxury cantaloupe fruit graphic, vibrant orange flesh texture, sweet and juicy element, rich green and orange color"},
     salmon: {name: "鮭", basePrompt: "vibrant salmon fish pattern, rich river life motif, detailed scales texture"},
+    hokkaidomap: {name: "北海道地図", basePrompt: "stylized Hokkaido map graphic, geometric silhouette, iconic island shape, representing local identity and geography"},
 };
 
 // 画像ファイル名リスト
@@ -329,7 +330,7 @@ function closeImageModal() {
 
 // --- プロンプト生成 ---
 function generatePrompt() {
-    let prompt = "Create a Hokkaido image graphic concept, ";
+    let prompt = "Create a Hokkaido local brand visual concept, ";
 
     // キーワード
     if (selectedKeywords.length > 0) {
@@ -363,7 +364,7 @@ function generatePrompt() {
         prompt += `${customMotif}, `;
     }
 
-    prompt += "brand logo text 'Sample' clearly visible on the graphic, soft diffused lighting, high quality, 4K resolution,";
+    prompt += "High-quality illustration, professional branding graphic design, 4K resolution, Clean composition, commercial use artwork, no text, no logo, no watermarks.";
     return prompt;
 }
 
