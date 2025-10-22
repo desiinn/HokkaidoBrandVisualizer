@@ -1,0 +1,75 @@
+/* カスタムスタイル（必要に応じて追加） */
+body {
+  overflow-y: scroll;
+}
+/* ヘッダータイトルに Shippori Mincho を適用 */
+.header-title {
+    font-family: "Shippori Mincho", serif;
+    /* 必要ならサイズや行間を微調整 */
+    letter-spacing: 0.02em;
+}
+/* ボタンホバーエフェクトの微調整 */
+.package-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detail-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.angle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* アニメーション */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 選択状態のアニメーション */
+.selected {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* コードブロックのスタイル調整 */
+#generated-prompt {
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+/* モバイル対応の改善 */
+@media (max-width: 640px) {
+    .grid.grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .flex.flex-col.sm\\:flex-row {
+        flex-direction: column;
+    }
+}
