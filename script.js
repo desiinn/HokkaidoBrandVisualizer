@@ -1,51 +1,37 @@
-const REPO_NAME = "ConceptPaletteforCosme";
+const REPO_NAME = "HokkaidoBrandVisualizer";
 // --- キーワードリスト（自由に追加可能） ---
 const keywordsList = [
     { key: "luxury", name: "高級感" },
-    { key: "elegant", name: "エレガント" },
     { key: "simple", name: "シンプル" },
     { key: "modern", name: "モダン" },
     { key: "natural", name: "ナチュラル" },
+    { key: "rustic", name: "素朴" },
     { key: "clean", name: "クリーン" },
-    { key: "feminine", name: "フェミニン" },
-    { key: "botanical", name: "ボタニカル" },
+    { key: "clear", name: "透明感" },
     { key: "unique", name: "ユニーク" },
     { key: "pop", name: "ポップ" },
     { key: "japanese", name: "和風" },
-    { key: "ethnic", name: "エスニック" },
-    { key: "futuristic", name: "未来的" },
+    { key: "retro", name: "レトロ" },
     // ...追加可能
 ];
 // キーワードごとのプロンプト例
 const keywordPrompts = {
     luxury: "high-end luxury, premium feel, spremium materials, harmonious design",
-    elegant: "classic elegant style, refined and graceful, soft shadows",
     simple: "clean simple aesthetic, intuitive layout, effortless and accessible design, clear and easy to understand",
     modern: "sleek modern design, cutting-edge typography, contemporary forms",
     natural: "natural organic ingredients concept, subtle hand-rendered graphic texture, muted earthy tones, serene atmosphere",
+    rustic: "rustic handcrafted texture, cozy and inviting feel, vintage illustration style, traditional and sincere design",
     clean: "pristine clean aesthetic, delicate graphic, clear and crisp visual elements",
-    feminine: "delicate feminine beauty, gentle and sophisticated forms, elegant and refined details, ethereal and delicate mood, smooth matte texture",
-    botanical: "lush botanical graphic elements, rich greenery, detailed plant motif illustration, vibrant natural light, active floral and leaf composition",
+    clear: "crystal clear appearance, transparent and icy texture, light and delicate design, fresh and refreshing atmosphere",
     unique: "Distinct unique concept, visually compelling arrangement, artistic composition, bold expressive style",
     pop: "Bold, dynamic graphic style, high contrast and saturation, vibrant playful aesthetic, energetic visual elements",
     japanese: " Japanese-inspired graphic, elegant simplicity, delicate brushwork, tranquil atmosphere, intricate yet subtle design",
-    ethnic: "Ethnic-inspired design, intricate tribal motifs, rich cultural patterns, handcrafted textures, earthy and organic feel, traditional ornamentation",
-    futuristic: "Futuristic design, sleek and sophisticated, minimalist yet luxurious, dynamic composition, innovative design concept",
-};
-
-// パッケージタイプ
-const packageTypes = {
-    box: {name: "箱", basePrompt: "white paper packaging box, seamless edges"},
-    bottle: {name: "ボトル", basePrompt: "cosmetic bottle packaging"},
-    tube: {name: "チューブ", basePrompt: "cosmetic tube packaging"},
-    jar: {name: "クリームジャー", basePrompt: "cosmetic glass jar, cream container"},
-    pouch: {name: "パウチ", basePrompt: "foil packaging pouch, sachet, single-use packet"},
+    retro: "Futuristic design, sleek and sophisticated, minimalist yet luxurious, dynamic coNostalgic, vintage package design, inspired by 1950s or 1980s graphics, using faded colors and period typography.mposition, innovative design concept",
 };
 
 // --- 色調キーワード（カラー選択からキーワード選択へ変更） ---
 const toneOptions = [
     { key: "tone-pale", name: "ペールトーン", gradientColors: ['#FADADD', '#FFFACD', '#C8F9E4', '#E5E3F5'], prompt: "pale tone, high lightness and low saturation color palette, delicate and soft, ethereal and transparent tints" },
-    { key: "tone-pastel", name: "パステルカラー", gradientColors:  ['#FFC0CB', '#FAFAD2', '#98FB98', '#B19CD9'], prompt: "pastel color palette, medium lightness and saturation, cute and cheerful, highly visible tints, bright and gentle atmosphere" },  
     { key: "tone-vivid", name: "ビビッド", gradientColors: ['#FF00FF', '#FFFF00', '#00FFFF', '#FF0000'], prompt: "vivid saturated colors, bright and energetic" },
     { key: "tone-nuance", name: "ニュアンスカラー", gradientColors: ['#A9A9A9', '#B0C4DE', '#B5878F'], prompt: "nuanced desaturated colors, subtle and sophisticated" },
     { key: "tone-dark", name: "ダークトーン", gradientColors:['#653030', '#4B5320', '#191970', '#000000'], prompt: "dark tone, deep rich colors, moody" },
@@ -55,320 +41,28 @@ const toneOptions = [
     // ...追加可能
 ];
 
+// --- 北海道モチーフオプション ---
+const motifOptions = {
+    bear: {name: "ヒグマ", basePrompt: "Hokkaido brown bear motif graphic, bold and powerful illustration, wilderness element"},
+    fox: {name: "キタキツネ", basePrompt: "cute Ezo red fox illustration, playful and curious character, snowy winter setting"},
+    simaenaga: {name: "シマエナガ", basePrompt: "cute Long-tailed tit bird graphic, fluffy white feather texture, round and tiny figure, snowy winter forest setting"},
+    cow: {name: "牛", basePrompt: "detailed Holstein dairy cow illustration, peaceful and plump animal character, vast green pasture background"},
+    lavender: {name: "ラベンダー", basePrompt: "delicate lavender flower illustration, rich herb graphic, vibrant and colorful bloom, subtle texture"},
+    birch: {name: "白樺", basePrompt: "elegant white birch tree forest motif, tall slender trunk pattern, refreshing light green leaves illustration, cool and serene atmosphere"},
+    farm: {name: "牧場", basePrompt: "wide open pasture landscape illustration, wooden fence and silo motif, vast and peaceful atmosphere"},
+    plain: {name: "大地", basePrompt: "vast green plain landscape illustration, endless horizon and open sky, serene and peaceful atmosphere, earthy and natural texture"},
+    sea: {name: "海", basePrompt: "deep ocean wave pattern, abstract marine texture, vast and powerful blue color gradient, sparkling water surface"},
+    driftice: {name: "流氷", basePrompt: "cold and majestic drift ice pattern, geometric ice block texture, abstract winter landscape"}, 
+    snow: {name: "雪", basePrompt: "minimalist snow crystal graphic, icy clear texture, cool and crisp atmosphere, pure white"},
+    milk: {name: "牛乳", basePrompt: "fresh milk carton or bottle graphic, creamy white liquid texture, simple and healthy food element, bright blue and white color"},
+    potato: {name: "ジャガイモ", basePrompt: "round and earthy potato vegetable motif, rough skin texture, natural harvest illustration, brown and yellow tones"},
+    melon: {name: "メロン", basePrompt: "sliced luxury cantaloupe fruit graphic, vibrant orange flesh texture, sweet and juicy element, rich green and orange color"},
+    salmon: {name: "鮭", basePrompt: "vibrant salmon fish pattern, rich river life motif, detailed scales texture"},
+};
+
 // 画像ファイル名リスト
 const pictImages = [
 "botanical_clean_modern_tone-pale_bottle.jpeg",
-"botanical_elegant_japanese_tone-pastel_bottle_pouch.jpeg",
-"botanical_elegant_tone-cool_pouch.jpeg",
-"botanical_luxury_tone-dark_bottle_pouch.jpeg",
-"botanical_natural_tone-dark_bottle.jpeg",
-"botanical_natural_tone-monotone_pouch.jpeg",
-"botanical_natural_tone-nuance_jar.jpeg",
-"botanical_natural_tone-nuance_pouch.jpeg",
-"botanical_natural_tone-nuance_pouch_2.jpeg",
-"botanical_natural_tone-warm_box.jpeg",
-"botanical_tone-dark_pouch.jpeg",
-"botanical_tone-dark_pouch_2.jpeg",
-"botanical_tone-pale_bottle_pouch.jpeg",
-"botanical_tone-pastel_bottle_pouch.jpeg",
-"botanical_unique_tone-cool_tube.jpeg",
-"botanical_unique_tone-pastel_bottle.jpeg",
-"botanical_unique_tone-warm_pouch.jpeg",
-"clean_elegant_simple_tone-monotone_bottle_pouch.jpeg",
-"clean_elegant_simple_tone-monotone_pouch.jpeg",
-"clean_futuristic_tone-cool_box_bottle.jpeg",
-"clean_modern_simple_tone-pale_pouch.jpeg",
-"clean_modern_tone-pale_tube.jpeg",
-"clean_pop_modern_tone-cool_box_jar.jpeg",
-"clean_pop_tone-cool_bottle_pouch.jpeg",
-"clean_simple_modern_tone-monotone_bottle.jpeg",
-"clean_simple_tone-cool_bottle.jpeg",
-"clean_simple_tone-cool_pouch.jpeg",
-"clean_simple_tone-cool_tube.jpeg",
-"clean_simple_tone-monotone_bottle_jar.jpeg",
-"clean_simple_tone-pale_tube.jpeg",
-"clean_tone-cool_box_2.jpeg",
-"clean_tone-cool_pouch.jpeg",
-"clean_tone-pastel_tube.jpeg",
-"elegant_feminine_tone-pale_jar.jpeg",
-"elegant_feminine_tone-pale_tube.jpeg",
-"elegant_feminine_tone-pale_tube_2.jpeg",
-"elegant_feminine_tone-pale_tube_3.jpeg",
-"elegant_luxury_botanical_tone-nuance_bottle.jpeg",
-"elegant_luxury_tone-cool_tube.jpeg",
-"elegant_luxury_tone-nuance_jar.jpeg",
-"elegant_simple_tone-nuance_jar.jpeg",
-"elegant_tone-nuance_jar.jpeg",
-"elegant_tone-pale_jar.jpeg",
-"elegant_tone-pale_jar_2.jpeg",
-"elegant_tone-pale_jar_3.jpeg",
-"elegant_tone-warm_tube.jpeg",
-"ethnic_tone-dark_jar.jpeg",
-"ethnic_tone-dark_pouch.jpeg",
-"ethnic_tone-dark_tube.jpeg",
-"ethnic_tone-monotone_pouch.jpeg",
-"ethnic_tone-pastel_bottle_pouch.jpeg",
-"ethnic_tone-pastel_pouch.jpeg",
-"ethnic_tone-vivid_bottle_pouch.jpeg",
-"ethnic_tone-vivid_box.jpeg",
-"ethnic_tone-vivid_pouch.jpeg",
-"ethnic_tone-vivid_tube.jpeg",
-"feminine_botanical_elegant_tone-pale_bottle.jpeg",
-"feminine_botanical_elegant_tone-pale_tube.jpeg",
-"feminine_botanical_elegant_tone-pastel_bottle.jpeg",
-"feminine_botanical_tone-pale_bottle.jpeg",
-"feminine_elegant_botanical_luxury_tone-warm_bottle.jpeg",
-"feminine_elegant_botanical_tone-nuance_bottle.jpeg",
-"feminine_elegant_botanical_tone-pastel_bottle.jpeg",
-"feminine_elegant_botanical_tone-warm_bottle.jpeg",
-"feminine_elegant_luxury_tone-pale_bottle.jpeg",
-"feminine_elegant_tone-pale_bottle.jpeg",
-"feminine_elegant_tone-pale_tube.jpeg",
-"feminine_luxury_elegant_botanical_tone-pastel_tube_pouch.jpeg",
-"feminine_modern_tone-pale_bottle_tube.jpeg",
-"feminine_natural_tone-pale_bottle_pouch.jpeg",
-"feminine_pop_tone-pale_bottle.jpeg",
-"feminine_pop_tone-pale_tube.jpeg",
-"feminine_simple_tone-pale_pouch.jpeg",
-"feminine_simple_tone-pale_tube.jpeg",
-"feminine_tone-pale_bottle_pouch.jpeg",
-"futuristic_modern_clean_tone-monotone_box.jpeg",
-"futuristic_modern_tone-vivid_box.jpeg",
-"futuristic_simple_tone-vivid_tube.jpeg",
-"futuristic_tone-cool_bottle.jpeg",
-"futuristic_tone-cool_box.jpeg",
-"futuristic_tone-cool_pouch.jpeg",
-"futuristic_tone-cool_pouch_2.jpeg",
-"futuristic_tone-cool_pouch_3.jpeg",
-"futuristic_tone-monotone_pouch.jpeg",
-"futuristic_tone-vivid_box.jpeg",
-"futuristic_tone-vivid_pouch.jpeg",
-"japanese_botanical_tone-monotone_pouch.jpeg",
-"japanese_modern_tone-cool_pouch.jpeg",
-"japanese_modern_tone-dark_bottle_pouch.jpeg",
-"japanese_tone-cool_pouch.jpeg",
-"japanese_tone-cool_tube.jpeg",
-"japanese_tone-dark_bottle.jpeg",
-"japanese_tone-dark_box.jpeg",
-"japanese_tone-dark_pouch.jpeg",
-"japanese_tone-monotone_box.jpeg",
-"japanese_tone-monotone_pouch.jpeg",
-"japanese_tone-monotone_pouch_2.jpeg",
-"japanese_tone-monotone_pouch_3.jpeg",
-"japanese_tone-monotone_pouch_4.jpeg",
-"japanese_tone-monotone_tube.jpeg",
-"japanese_tone-nuance_pouch.jpeg",
-"japanese_tone-nuance_pouch_2.jpeg",
-"japanese_tone-pale_bottle_pouch.jpeg",
-"japanese_tone-pale_pouch.jpeg",
-"japanese_tone-pale_pouch_2.jpeg",
-"japanese_tone-pastel_box.jpeg",
-"japanese_tone-pastel_box_jar.jpeg",
-"japanese_tone-vivid_pouch.jpeg",
-"japanese_tone-vivid_pouch_2.jpeg",
-"japanese_tone-warm_pouch.jpeg",
-"japanese_tone-warm_pouch_2.jpeg",
-"luxury_box.jpeg",
-"luxury_elegant_tone-dark_box.jpeg",
-"luxury_elegant_tone-dark_tube.jpeg",
-"luxury_elegant_tone-warm_box_bottle_jar.jpeg",
-"luxury_elegant_tone-warm_jar.jpeg",
-"luxury_elegant_tone-warm_pouch.jpeg",
-"luxury_elegant_tone-warm_tube.jpeg",
-"luxury_elegant_tone-warm_tube_2.jpeg",
-"luxury_modern_tone-monotone_bottle.jpeg",
-"luxury_modern_tone-monotone_box.jpeg",
-"luxury_modern_tone-monotone_box_2.jpeg",
-"luxury_modern_tone-vivid_tube.jpeg",
-"luxury_simple_modern_tone-monotone_box_tube.jpeg",
-"luxury_simple_modern_tone-monotone_jar.jpeg",
-"luxury_simple_modern_tone-monotone_jar2.jpeg",
-"luxury_simple_modern_tone-monotone_tube.jpeg",
-"luxury_simple_modern_tone-monotone_tube_2.jpeg",
-"luxury_tone-cool_box.jpeg",
-"luxury_tone-cool_pouch.jpeg",
-"luxury_tone-cool_tube.jpeg",
-"luxury_tone-dark_box.jpeg",
-"luxury_tone-dark_box2.jpeg",
-"luxury_tone-dark_box_2.jpeg",
-"luxury_tone-dark_pouch.jpeg",
-"luxury_tone-monotone_bottle.jpeg",
-"luxury_tone-monotone_box.jpeg",
-"luxury_tone-warm_tube.jpeg",
-"modern_clean_tone-pale_box.jpeg",
-"modern_luxury_tone-cool_pouch.jpeg",
-"modern_pop_tone-vivid_box.jpeg",
-"modern_pop_tone-vivid_pouch.jpeg",
-"modern_simple_tone-monotone_bottle.jpeg",
-"modern_simple_tone-monotone_box.jpeg",
-"modern_simple_tone-monotone_tube.jpeg",
-"modern_simple_tone-vivid_box.jpeg",
-"modern_simple_tone-vivid_pouch.jpeg",
-"modern_simple_unique_tone-nuance_tube.jpeg",
-"modern_tone-cool_pouch.jpeg",
-"modern_tone-dark_bottle_pouch _2.jpeg",
-"modern_tone-dark_bottle_pouch.jpeg",
-"modern_tone-dark_box.jpeg",
-"modern_tone-dark_box_2.jpeg",
-"modern_tone-dark_pouch.jpeg",
-"modern_tone-dark_pouch_2.jpeg",
-"modern_tone-monotone_pouch.jpeg",
-"modern_tone-monotone_pouch_2.jpeg",
-"modern_tone-vivid_pouch.jpeg",
-"modern_tone-vivid_pouch2.jpeg",
-"modern_tone-vivid_tube.jpeg",
-"modern_tone-warm_pouch.jpeg",
-"modern_tone-warm_tube.jpeg",
-"modern_unique_clean_futuristic_tone-monotone_jar.jpeg",
-"natural_botanical_tone-monotone_pouch.jpeg",
-"natural_botanical_tone-nuance_bottle_tube_jar.jpeg",
-"natural_botanical_tone-nuance_box.jpeg",
-"natural_botanical_tone-nuance_box_jar.jpeg",
-"natural_botanical_tone-nuance_jar.jpeg",
-"natural_botanical_tone-nuance_pouch.jpeg",
-"natural_botanical_tone-nuance_pouch_2.jpeg",
-"natural_botanical_tone-nuance_pouch_3.jpeg",
-"natural_botanical_tone-nuance_pouch_4.jpeg",
-"natural_botanical_tone-warm_pouch.jpeg",
-"natural_modern_tone-cool_tube.jpeg",
-"natural_modern_tone-cool_tube_pouch.jpeg",
-"natural_simple_luxury_tone-nuance_box.jpeg",
-"natural_simple_tone-nuance_pouch.jpeg",
-"natural_simple_tone-nuance_tube.jpeg",
-"natural_simple_tone-warm_pouch.jpeg",
-"natural_tone-cool_pouch.jpeg",
-"natural_tone-cool_pouch_2.jpeg",
-"natural_tone-dark_jar.jpeg",
-"natural_tone-dark_pouch.jpeg",
-"natural_tone-nuance_jar.jpeg",
-"natural_tone-nuance_pouch.jpeg",
-"natural_tone-nuance_pouch2.jpeg",
-"natural_tone-nuance_pouch3.jpeg",
-"natural_tone-nuance_pouch_2.jpeg",
-"natural_tone-nuance_pouch_3.jpeg",
-"natural_tone-nuance_pouch_4.jpeg",
-"natural_tone-nuance_pouch_5.jpeg",
-"natural_tone-nuance_pouch_6.jpeg",
-"natural_tone-nuance_tube.jpeg",
-"natural_tone-nuance_tube_2.jpeg",
-"pop_japanese_tone-vivid_pouch.jpeg",
-"pop_modern_futuristic_tone-vivid_pouch.jpeg",
-"pop_modern_tone-vivid_bottle_tube.jpeg",
-"pop_simple_tone-vivid_pouch.jpeg",
-"pop_tone-vivid_pouch.jpeg",
-"pop_tone-vivid_pouch_2.jpeg",
-"pop_tone-vivid_tube.jpeg",
-"pop_tone-vivid_tube_2.jpeg",
-"pop_tone-vivid_tube_3.jpeg",
-"pop_unique_futuristic_tone-vivid_jar.jpeg",
-"pop_unique_tone-vivid_bottle.jpeg",
-"pop_unique_tone-vivid_pouch.jpeg",
-"pop_unique_tone-vivid_pouch_2.jpeg",
-"pop_unique_tone-vivid_tube.jpeg",
-"pop_unique_tone-warm_box.jpeg",
-"pop_unique_tone-warm_pouch.jpeg",
-"simple_botanical_tone-pale_tube.jpeg",
-"simple_clean_tone-monotone_bottle.jpeg",
-"simple_feminine_tone-pale_bottle.jpeg",
-"simple_feminine_tone-pale_bottle_tube.jpeg",
-"simple_futuristic_tone-monotone_pouch.jpeg",
-"simple_luxury_bottle.jpeg",
-"simple_luxury_tone-cool_box_jar.jpeg",
-"simple_luxury_tone-dark_pouch.jpeg",
-"simple_luxury_tone-monotone_pouch.jpeg",
-"simple_luxury_tone-monotone_pouch_2.jpeg",
-"simple_luxury_tone-monotone_tube.jpeg",
-"simple_luxury_tone-monotone_tube2.jpeg",
-"simple_luxury_tone-monotone_tube_2.jpeg",
-"simple_luxury_tone-pale_tube.jpeg",
-"simple_luxury_tone-warm_box.jpeg",
-"simple_modern_feminine_tone-pale_tube.jpeg",
-"simple_modern_luxury_tone-monotone_box.jpeg",
-"simple_modern_tone-cool_pouch.jpeg",
-"simple_modern_tone-cool_pouch_2.jpeg",
-"simple_modern_tone-cool_pouch_3.jpeg",
-"simple_modern_tone-cool_tube_pouch.jpeg",
-"simple_modern_tone-dark_bottle_pouch.jpeg",
-"simple_modern_tone-dark_pouch.jpeg",
-"simple_modern_tone-dark_pouch_2.jpeg",
-"simple_modern_tone-dark_pouch_3.jpeg",
-"simple_modern_tone-monotone_box _2.jpeg",
-"simple_modern_tone-monotone_box.jpeg",
-"simple_modern_tone-monotone_pouch.jpeg",
-"simple_modern_tone-monotone_pouch_2.jpeg",
-"simple_modern_tone-monotone_pouch_3.jpeg",
-"simple_modern_tone-monotone_pouch_4.jpeg",
-"simple_modern_tone-monotone_pouch_5.jpeg",
-"simple_modern_tone-monotone_tube.jpeg",
-"simple_modern_tone-nuance_pouch.jpeg",
-"simple_modern_tone-nuance_tube_pouch.jpeg",
-"simple_modern_tone-vivid_pouch.jpeg",
-"simple_modern_tone-vivid_tube.jpeg",
-"simple_modern_tone-warm_pouch.jpeg",
-"simple_modern_tone-warm_pouch_2.jpeg",
-"simple_pop_tone-cool_tube.jpeg",
-"simple_pop_tone-dark_pouch.jpeg",
-"simple_pop_tone-warm_pouch.jpeg",
-"simple_pop_tone-warm_pouch_2.jpeg",
-"simple_tone-cool_pouch.jpeg",
-"simple_tone-cool_pouch_2.jpeg",
-"simple_tone-dark_bottle_pouch.jpeg",
-"simple_tone-dark_pouch.jpeg",
-"simple_tone-monotone_box.jpeg",
-"simple_tone-monotone_tube_bottle.jpeg",
-"simple_tone-nuance_pouch.jpeg",
-"simple_tone-nuance_pouch_2.jpeg",
-"simple_tone-nuance_tube.jpeg",
-"simple_tone-pale_bottle_tube_pouch.jpeg",
-"simple_tone-pale_pouch.jpeg",
-"simple_tone-pale_pouch_2.jpeg",
-"simple_tone-pale_tube_pouch.jpeg",
-"simple_tone-pastel_pouch.jpeg",
-"simple_tone-pastel_pouch_2.jpeg",
-"simple_tone-pastel_pouch_3.jpeg",
-"simple_tone-pastel_pouch_4.jpeg",
-"simple_tone-pastel_pouch_5.jpeg",
-"simple_tone-pastel_pouch_6.jpeg",
-"simple_tone-pastel_tube.jpeg",
-"simple_tone-warm_pouch.jpeg",
-"simple_tone-warm_tube_pouch.jpeg",
-"unique_elegant_pop_tone-pastel_bottle.jpeg",
-"unique_futuristic_tone-pastel_jar.jpeg",
-"unique_modern_tone-monotone_pouch.jpeg",
-"unique_pop_futuristic_tone-vivid_pouch.jpeg",
-"unique_pop_tone-pastel_bottle.jpeg",
-"unique_pop_tone-pastel_tube_pouch.jpeg",
-"unique_pop_tone-vivid_bottle.jpeg",
-"unique_pop_tone-vivid_pouch.jpeg",
-"unique_pop_tone-warm_jar.jpeg",
-"unique_simple_tone-vivid_box_bottle.jpeg",
-"unique_tone-cool_pouch.jpeg",
-"unique_tone-cool_pouch_2.jpeg",
-"unique_tone-cool_tube_pouch.jpeg",
-"unique_tone-dark_bottle_pouch.jpeg",
-"unique_tone-dark_box.jpeg",
-"unique_tone-dark_pouch.jpeg",
-"unique_tone-dark_pouch_2.jpeg",
-"unique_tone-dark_pouch_3.jpeg",
-"unique_tone-dark_tube.jpeg",
-"unique_tone-monotone_pouch_2.jpeg",
-"unique_tone-monotone_pouch_3.jpeg",
-"unique_tone-monotone_tube.jpeg",
-"unique_tone-monotone_tube_pouch.jpeg",
-"unique_tone-nuance_pouch.jpeg",
-"unique_tone-pale_bottle.jpeg",
-"unique_tone-pale_pouch.jpeg",
-"unique_tone-pastel_box.jpeg",
-"unique_tone-pastel_pouch.jpeg",
-"unique_tone-pastel_pouch_2.jpeg",
-"unique_tone-pastel_tube_pouch.jpeg",
-"unique_tone-vivid_bottle.jpeg",
-"unique_tone-vivid_bottle_2.jpeg",
-"unique_tone-vivid_jar.jpeg",
-"unique_tone-vivid_jar_2.jpeg",
-"unique_tone-vivid_pouch.jpeg",
-"unique_tone-vivid_pouch_2.jpeg",
-"unique_tone-warm_pouch.jpeg",
 // ...追加可能
 ];
 
@@ -385,12 +79,13 @@ const availableImages = pictImages.map(filename => {
 // --- 状態変数 ---
 let selectedKeywords = [];
 let selectedColorTone = "";
-let selectedPackageType = "";
+let selectedMotifs = []; // 複数選択対応に変更
+let selectedMotif = ""; // 旧互換（残さなくても可）
 
 // --- DOM要素 ---
 let keywordsContainer;
 let colorContainer;
-let packageTypesContainer;
+let motifOptionsContainer;
 let showPromptBtn;
 let copyPromptBtn;
 let resetBtn;
@@ -401,12 +96,13 @@ let selectionSummary;
 let imageDisplayArea;
 let dynamicImageGrid;
 let customColorToneInput; 
+let customMotifInput; // 追加
 
 // --- 初期化 ---
 function initializeElements() {
     keywordsContainer = document.getElementById("keywords-container");
     colorContainer = document.getElementById("color-tones"); 
-    packageTypesContainer = document.getElementById("package-types");
+    motifOptionsContainer = document.getElementById("motif-options");
     showPromptBtn = document.getElementById("show-prompt-btn");
     copyPromptBtn = document.getElementById("copy-prompt-btn");
     resetBtn = document.getElementById("reset-btn");
@@ -417,6 +113,7 @@ function initializeElements() {
     imageDisplayArea = document.getElementById("image-display-area");
     dynamicImageGrid = document.getElementById("dynamic-image-grid");
     customColorToneInput = document.getElementById("custom-color-tone");
+    customMotifInput = document.getElementById("custom-motif");
 }
 
 // --- キーワードボタン生成 ---
@@ -454,7 +151,7 @@ function renderKeywords() {
     keywordsContainer.appendChild(row);
 }
 
-// --- 色調（キーワード）ボタン生成 ---
+// --- 色調ボタン生成 ---
 function renderColorTones() {
     colorContainer.innerHTML = "";
 
@@ -487,7 +184,7 @@ function renderColorTones() {
         button.appendChild(textSpan);
 
         button.onclick = () => {
-            selectedColorTone = isSelected ? "" : tone.key; // 単一選択に変更
+            selectedColorTone = isSelected ? "" : tone.key; 
             updateUI();
         };
         row.appendChild(button);
@@ -497,50 +194,68 @@ function renderColorTones() {
 }
 
 
-// --- パッケージタイプボタン生成（任意選択） ---
-function renderPackageTypes() {
-    packageTypesContainer.innerHTML = "";
-    // ボタンを横並びにするためのコンテナを追加
+// --- モチーフボタン生成（複数選択対応） ---
+function renderMotifOptions() {
+    motifOptionsContainer.innerHTML = "";
     const row = document.createElement("div");
-    row.className = "flex flex-wrap gap-3"; // flex, flex-wrap, gap-3を追加
+    row.className = "flex flex-wrap gap-3";
 
-    Object.keys(packageTypes).forEach(key => {
-        const type = packageTypes[key];
-        const isSelected = selectedPackageType === key;
+    Object.keys(motifOptions).forEach(key => {
+        const type = motifOptions[key];
+        const isSelected = selectedMotifs.includes(key);
         const button = document.createElement("button");
 
-        // クラス名を統一感のあるフォーマットで設定
-        button.className = `package-btn p-3 rounded-lg border-2 transition-all duration-200 flex justify-center items-center ${
+        button.className = `motif-btn p-3 rounded-lg border-2 transition-all duration-200 flex justify-center items-center ${
             isSelected ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
         }`;
         
-        // ボタンのテキスト要素を作成
         const textDiv = document.createElement("div");
         textDiv.className = "text-center text-base";
         textDiv.textContent = type.name;
 
-        // 要素を組み立て
         button.appendChild(textDiv);
 
         button.onclick = () => {
-            selectedPackageType = isSelected ? "" : key;
+            if (isSelected) {
+                selectedMotifs = selectedMotifs.filter(m => m !== key);
+            } else {
+                selectedMotifs.push(key);
+            }
             updateUI();
         };
-        // 修正: rowに追加
         row.appendChild(button);
     });
-    // 修正: packageTypesContainerにrowを追加
-    packageTypesContainer.appendChild(row);
+
+// カスタムモチーフ入力がある場合はその表示（空文字は表示しない）
+    if (customMotifInput && customMotifInput.value && customMotifInput.value.trim()) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "flex items-center gap-2";
+
+        // カスタム値表示（簡易）
+        const note = document.createElement("div");
+        note.className = "text-sm text-gray-600";
+        note.textContent = "カスタムモチーフ:";
+        wrapper.appendChild(note);
+
+        const display = document.createElement("div");
+        display.className = "text-sm text-gray-800";
+        display.textContent = customMotifInput.value.trim();
+        wrapper.appendChild(display);
+
+        row.appendChild(wrapper);
+
+    }
+    motifOptionsContainer.appendChild(row);
 }
 
-// --- 画像フィルタ（AND条件：キーワード・色調・パッケージ種類） ---
+// --- 画像フィルタ（AND条件：キーワード・色調・モチーフ） ---
 function updateFilteredImages() {
     dynamicImageGrid.innerHTML = "";
-    // フィルター条件（selectedColorTone を単一値として扱う）
+    // フィルター条件（selectedMotifs を配列として展開）
     const filters = [
         ...selectedKeywords,
         selectedColorTone,
-        selectedPackageType
+        ...selectedMotifs
     ].filter(Boolean);
 
     // 何も選択されていない場合は画像を表示しない
@@ -556,7 +271,7 @@ function updateFilteredImages() {
             matchingImages.forEach(image => {
                 const imageEl = document.createElement("img");
                 imageEl.src = image.src;
-                imageEl.alt = "選択されたパッケージのイメージ";
+                imageEl.alt = "選択されたモチーフ";
                 imageEl.className = "w-full h-full object-contain rounded-lg border border-gray-300 cursor-pointer transition hover:scale-105";
                 imageEl.style.maxWidth = "200px";
                 imageEl.style.maxHeight = "200px";
@@ -583,7 +298,7 @@ function updateFilteredImages() {
         matchingImages.forEach(image => {
             const imageEl = document.createElement("img");
             imageEl.src = image.src;
-            imageEl.alt = "選択されたパッケージのイメージ";
+            imageEl.alt = "選択されたモチーフ";
             imageEl.className = "w-full h-full object-contain rounded-lg border border-gray-300 cursor-pointer transition hover:scale-105";
             imageEl.style.maxWidth = "200px";
             imageEl.style.maxHeight = "200px";
@@ -597,7 +312,6 @@ function updateFilteredImages() {
         dynamicImageGrid.innerHTML = '<div class="text-gray-500 text-center py-8 col-span-4">該当する画像がありません</div>';
     }
 }
-
 
 // --- 画像プレビューモーダル ---
 function openImageModal(src) {
@@ -615,7 +329,7 @@ function closeImageModal() {
 
 // --- プロンプト生成 ---
 function generatePrompt() {
-    let prompt = "Create a cosmetic package graphic concept, ";
+    let prompt = "Create a Hokkaido image graphic concept, ";
 
     // キーワード
     if (selectedKeywords.length > 0) {
@@ -639,12 +353,17 @@ function generatePrompt() {
         prompt += `main color: ${customColor}, `;
     }
 
-    // パッケージ種類（basePromptを使用）
-    if (selectedPackageType && packageTypes[selectedPackageType]?.basePrompt) {
-        prompt += packageTypes[selectedPackageType].basePrompt + ", ";
+    // モチーフ（複数選択 + カスタム）
+    const motifPrompts = selectedMotifs.map(m => motifOptions[m]?.basePrompt).filter(Boolean);
+    if (motifPrompts.length > 0) {
+        prompt += motifPrompts.join(", ") + ", ";
+    }
+    const customMotif = customMotifInput?.value?.trim();
+    if (customMotif) {
+        prompt += `${customMotif}, `;
     }
 
-    prompt += "brand logo text 'Sample' clearly visible on the package, soft diffused lighting, high quality, product photography style, 4K resolution, commercial grade mockup, clean white background";
+    prompt += "brand logo text 'Sample' clearly visible on the graphic, soft diffused lighting, high quality, 4K resolution,";
     return prompt;
 }
 
@@ -653,11 +372,11 @@ function generatePrompt() {
 function updateUI() {
     renderKeywords();
     renderColorTones();
-    renderPackageTypes();
+    renderMotifOptions();
     updateFilteredImages();
-    const hasKeywords = selectedKeywords.length > 0;
-    showPromptBtn.disabled = !hasKeywords;
-    copyPromptBtn.disabled = !hasKeywords;
+    const hasSelection = selectedKeywords.length > 0 || selectedMotifs.length > 0 || selectedColorTone || (customColorToneInput?.value?.trim()) || (customMotifInput?.value?.trim());
+    showPromptBtn.disabled = !hasSelection;
+    copyPromptBtn.disabled = !hasSelection;
     promptDisplay.classList.add("hidden");
     if (window.lucide) {
         lucide.createIcons();
@@ -666,7 +385,8 @@ function updateUI() {
 
 // --- プロンプト表示（要約部分の色調表示も toneOptions に合わせて修正） ---
 function showPrompt() {
-    if (selectedKeywords.length === 0) return;
+    const hasSelection = selectedKeywords.length > 0 || selectedMotifs.length > 0 || selectedColorTone || (customColorToneInput?.value?.trim()) || (customMotifInput?.value?.trim());
+    if (!hasSelection) return;
     const prompt = generatePrompt();
     generatedPrompt.textContent = prompt;
     let summaryHTML = "";
@@ -681,8 +401,13 @@ function showPrompt() {
         const found = toneOptions.find(opt => opt.key === selectedColorTone);
         if (found) summaryHTML += `<div><strong>色調:</strong> ${found.name}</div>`;
     }
-    if (selectedPackageType) {
-        summaryHTML += `<div><strong>パッケージ種類:</strong> ${packageTypes[selectedPackageType].name}</div>`;
+    if (selectedMotifs.length > 0) {
+        const motifNames = selectedMotifs.map(m => motifOptions[m]?.name || m);
+        summaryHTML += `<div><strong>モチーフ:</strong> ${motifNames.join(", ")}</div>`;
+    }
+    const customMotif = customMotifInput?.value?.trim();
+    if (customMotif) {
+        summaryHTML += `<div><strong>カスタムモチーフ:</strong> ${customMotif}</div>`;
     }
     selectionSummary.innerHTML = summaryHTML;
     promptDisplay.classList.remove("hidden");
@@ -723,10 +448,11 @@ function showCopyMessage(message) {
 function reset() {
     selectedKeywords = [];
     selectedColorTone = "";
-    selectedPackageType = "";
+    selectedMotifs = [];
     promptDisplay.classList.add("hidden");
     copyMessage.classList.add("hidden");
     if (customColorToneInput) customColorToneInput.value = "";
+    if (customMotifInput) customMotifInput.value = "";
     updateUI();
 }
 
